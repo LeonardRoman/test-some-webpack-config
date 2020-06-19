@@ -1,0 +1,21 @@
+{
+  "name": "test-some-webpack-config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "scriptGeneral": "webpack --config ./src-general/webpack.config.js",
+    "scriptOne": "webpack --config areas/src-one/webpack.config.js",
+    "scriptTwo": "webpack --config areas/src-two/webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "dependencies": {
+    "vue": "^2.6.11"
+  }
+}
