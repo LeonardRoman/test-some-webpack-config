@@ -1,28 +1,24 @@
 // Core
-const { resolve } = require('path')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 // Constants
-const SRC_GENERAL = resolve(__dirname, '../../src-general')
-const SRC_ONE = resolve(__dirname)
-const BUILD_DESTINATION = resolve(__dirname, '../../wwwroot')
+const { PROJECT_ROOT, BUILD_DIRECTORY, APP_DIRECTORY } = require('../../src-general/webpack/constants')
 const AREA_NAME = 'one'
 
 // Config
 module.exports = () => {
   return {
     mode: 'development',
-    entry: SRC_GENERAL,
+    entry: APP_DIRECTORY,
     output: {
-      path: BUILD_DESTINATION,
+      path: BUILD_DIRECTORY,
       filename: AREA_NAME + '.js'
     },
     resolve: {
       alias: {
-        Utilities: resolve(__dirname, 'src/utilities/'),
-        Templates: resolve(__dirname, 'src/templates/')
+        '@': PROJECT_ROOT
       }
     },
     plugins: [
