@@ -1,14 +1,44 @@
 // Core
+const fs = require('fs')
+const path = require('path')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 // Constants
-const { PROJECT_ROOT, BUILD_DIRECTORY, APP_DIRECTORY } = require('../../src-general/webpack/constants')
-const AREA_NAME = 'one'
+const { PROJECT_ROOT, BUILD_DIRECTORY, APP_DIRECTORY } = require('./constants')
+const APP_CONFIG = path.join(APP_DIRECTORY + '/index.js')
 
 // Config
-module.exports = () => {
+module.exports = (cliString) => {
+  // Забираем из из опции командной строки имя area
+  const AREA_NAME = cliString.AREA_NAME
+  const AREA_DIRECTORY = path.join(APP_DIRECTORY + '/areas' + `src-${AREA_NAME}`)
+  // До запуска кофигурационного файла заменяем импорт
+  fs.readFile(APP_CONFIG, 'utf8', (err, data) => {
+    if (err) throw err
+    let array = data.split('\n')
+    array = array.map(s => {
+      if (s.includes('import components')) {
+        if (AREA_NAME) {
+          return `import components from \'../areas/src-${AREA_NAME}\'`
+        } else {
+          return ''
+        }
+      } else {
+        return s
+      }
+    })
+    data = array.join('\n')
+    fs.writeFile(APP_CONFIG, data, (err) => {
+      if (err) {
+        throw err
+      } else {
+        console.log(`General app index.js add import area: ${AREA_NAME}`)
+      }
+    })
+  })
+
   return {
     mode: 'development',
     entry: APP_DIRECTORY,
@@ -18,7 +48,8 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        '@': PROJECT_ROOT
+        '@': PROJECT_ROOT,
+        '@area': AREA_DIRECTORY
       }
     },
     plugins: [

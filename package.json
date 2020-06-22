@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "scriptOne": "webpack --config areas/src-one/webpack.config.js",
-    "scriptTwo": "webpack --config areas/src-two/webpack.config.js"
+    "scriptOne": "webpack --config src-general/webpack/webpack.config.js --env.AREA_NAME=one",
+    "scriptTwo": "webpack --config src-general/webpack/webpack.config.js --env.AREA_NAME=two"
   },
   "keywords": [],
   "author": "",
