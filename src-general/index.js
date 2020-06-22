@@ -1,12 +1,9 @@
-import component from '../areas/src-two/two'
-
 import Vue from 'vue/dist/vue'
-
-let element = component()
-document.body.appendChild(element)
+import components from '../areas/src-one'
 
 const app = new Vue({
-  el: '#app'
+  el: '#app',
+  components
 })
 
 window.app = app
