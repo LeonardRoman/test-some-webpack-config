@@ -5,15 +5,20 @@
   "main": "index.js",
   "scripts": {
     "scriptOne": "webpack --config src-general/webpack/webpack.config.js --env.AREA_NAME=one",
-    "scriptTwo": "webpack --config src-general/webpack/webpack.config.js --env.AREA_NAME=two"
+    "scriptTwo": "webpack --config src-general/webpack/webpack.config.js --env.AREA_NAME=two",
+    "serve": "http-server \"./wwwroot\" -s"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@vue/babel-preset-app": "^4.4.6",
     "app-root-path": "^3.0.0",
+    "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
+    "http-server": "^0.12.3",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "vue-loader": "^15.9.2",

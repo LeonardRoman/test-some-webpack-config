@@ -13,7 +13,7 @@ const APP_CONFIG = path.join(APP_DIRECTORY + '/index.js')
 module.exports = (cliString) => {
   // Забираем из из опции командной строки имя area
   const AREA_NAME = cliString.AREA_NAME
-  const AREA_DIRECTORY = path.join(APP_DIRECTORY + '/areas' + `src-${AREA_NAME}`)
+  const AREA_DIRECTORY = path.join(APP_DIRECTORY + '/areas' + `/src-${AREA_NAME}`)
   // До запуска кофигурационного файла заменяем импорт
   fs.readFile(APP_CONFIG, 'utf8', (err, data) => {
     if (err) throw err
@@ -40,7 +40,8 @@ module.exports = (cliString) => {
   })
 
   return {
-    mode: 'development',
+    mode: 'none',
+    devtool: false,
     entry: APP_DIRECTORY,
     output: {
       path: BUILD_DIRECTORY,
@@ -48,8 +49,8 @@ module.exports = (cliString) => {
     },
     resolve: {
       alias: {
-        '@': PROJECT_ROOT,
-        '@area': AREA_DIRECTORY
+        '$': PROJECT_ROOT,
+        '$area': AREA_DIRECTORY
       }
     },
     plugins: [
@@ -84,6 +85,10 @@ module.exports = (cliString) => {
           test: /\.css$/,
           loader: 'style-loader!css-loader'
         },
+        {
+          test: /\.js$/,
+          loader: 'babel-loader'
+        }
       ]
     }
   }
