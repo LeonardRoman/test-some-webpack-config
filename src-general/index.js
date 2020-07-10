@@ -1,9 +1,11 @@
-import Vue from 'vue/dist/vue'
-import components from '../areas/src-one'
+import Vue from "vue/dist/vue";
+import components from '../areas/src-trader'
+import "./styles/global.scss";
+import "normalize.css";
 
 const app = new Vue({
-  el: '#app',
+  el: "#app",
   components
-})
+});
 
-window.app = app
+window.app = app;

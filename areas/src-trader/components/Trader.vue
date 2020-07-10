@@ -1,0 +1,133 @@
+<template>
+  <main class="grid-container">
+    <side-bar
+      class="side-bar"
+      :sideBarViewToggle="sideBarViewToggle"
+      @sideBarViewToggleEmit="testSideBar"
+    >
+      <template v-slot:filter>
+        <tree-filter
+          @sideBarViewToggleEmit="testFilter"
+          :sideBarViewToggle="sideBarViewToggle"
+        />
+      </template>
+      <template v-slot:status>
+        <tree-status
+          @sideBarViewToggleEmit="testStatus"
+          :sideBarViewToggle="sideBarViewToggle"
+        />
+      </template>
+    </side-bar>
+    <tree-trader
+      class="tree"
+      :backend='{gtps: [  
+    { gtpId: 1, gtpCode: "PNEFT01", atsCapApply: true, soCanApply: true, comonATSStatus: 2,
+        detaildedConsumtonPlan: {
+          "2020-07-09:00": 991,
+          "2020-07-09:01": 991,
+          "2020-07-09:02": 991,
+          "2020-07-09:03": 991,
+          "2020-07-09:04": 991,
+          "2020-07-09:05": 991,
+          "2020-07-09:06": 991,
+          "2020-07-09:07": 991,
+          "2020-07-09:08": 991,
+          "2020-07-09:09": 991,
+          "2020-07-09:10": 991,
+          "2020-07-09:11": 991,
+          "2020-07-09:12": 991,
+          "2020-07-09:13": 991,
+          "2020-07-09:14": 991,
+          "2020-07-09:15": 991,
+          "2020-07-09:16": 991,
+          "2020-07-09:17": 991,
+          "2020-07-09:18": 991,
+          "2020-07-09:19": 991,
+          "2020-07-09:20": 991,
+          "2020-07-09:21": 991,
+          "2020-07-09:22": 991,
+          "2020-07-09:23": 991,
+        }
+    },
+    { gtpId: 2, gtpCode: "PNEFT02", atsCapApply: true, soCanApply: true, comonATSStatus: 2,
+        detaildedConsumtonPlan: {
+          "2020-07-09:00": 991,
+          "2020-07-09:01": 991,
+          "2020-07-09:02": 991,
+          "2020-07-09:03": 991,
+          "2020-07-09:04": 991,
+          "2020-07-09:05": 991,
+          "2020-07-09:06": 991,
+          "2020-07-09:07": 991,
+          "2020-07-09:08": 991,
+          "2020-07-09:09": 991,
+          "2020-07-09:10": 991,
+          "2020-07-09:11": 991,
+          "2020-07-09:12": 991,
+          "2020-07-09:13": 991,
+          "2020-07-09:14": 991,
+          "2020-07-09:15": 991,
+          "2020-07-09:16": 991,
+          "2020-07-09:17": 991,
+          "2020-07-09:18": 991,
+          "2020-07-09:19": 991,
+          "2020-07-09:20": 991,
+          "2020-07-09:21": 991,
+          "2020-07-09:22": 991,
+          "2020-07-09:23": 991,
+        }
+    },
+      ]}'
+    >
+    </tree-trader>
+  </main>
+</template>
+
+<script>
+import SideBar from "../../../src-general/components/SideBar.vue";
+import TreeTrader from "./TreeTrader.vue";
+import TreeFilter from "./TreeFilter.vue";
+import TreeStatus from "./TreeStatus.vue";
+
+export default {
+  name: "Trader",
+  components: { TreeTrader, TreeStatus, SideBar, TreeFilter },
+  data() {
+    return {
+      sideBarViewToggle: false
+    };
+  },
+  methods: {
+    testFilter() {
+      console.log("эмит из фильтра");
+      this.sideBarViewToggle = !this.sideBarViewToggle;
+    },
+    testStatus() {
+      console.log("эмит из статуса");
+      this.sideBarViewToggle = !this.sideBarViewToggle;
+    },
+    testSideBar() {
+      console.log("эмит из сайтбара");
+      this.sideBarViewToggle = !this.sideBarViewToggle;
+    }
+  }
+};
+</script>
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  gap: 1px 1px;
+  grid-template-areas: "SideBar Content" "SideBar Content" "SideBar Content";
+}
+
+.side-bar {
+  grid-area: SideBar;
+}
+
+.tree {
+  grid-area: Content;
+}
+</style>
