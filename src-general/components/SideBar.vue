@@ -40,7 +40,7 @@ export default {
 <style scope>
 .side-bar {
   min-width: 41px;
-  transition: width 0.5s;
+  transition: min-width 0.5s;
 }
 .side-bar-active {
   min-width: 300px;
