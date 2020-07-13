@@ -1,9 +1,11 @@
 <template>
   <div
+    ref="sideBar"
     class="side-bar"
     :class='{"side-bar-active": sideBarViewToggle}'
   >
     <i
+      class="button-close"
       v-show="sideBarViewToggle"
       @click="closingSideBar"
     >
@@ -37,11 +39,21 @@ export default {
 
 <style scope>
 .side-bar {
-  width: 41px;
+  min-width: 41px;
   transition: width 0.5s;
 }
 .side-bar-active {
-  width: 30vw;
-  transition: width 0.5s;
+  min-width: 300px;
+  transition: min-width 0.5s;
+}
+.button-close {
+  content: "\e901";
+  cursor: pointer;
+  margin: 35px 0 0 0;
+  text-align: center;
+  font-size: 25px;
+  vertical-align: middle;
+  line-height: 0.5em;
+  color: #006cbe;
 }
 </style>
