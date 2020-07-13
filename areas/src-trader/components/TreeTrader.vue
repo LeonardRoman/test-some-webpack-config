@@ -1,7 +1,13 @@
 <template>
-  <div class="tree">
+  <div
+    class="tree"
+    @resize="test"
+  >
 
-    <div class="tree-header-container">
+    <div
+      class="tree-header-container"
+      ref="treeHeaderContainer"
+    >
       <div class="tree-header-name">
         Наименование
       </div>
@@ -15,19 +21,18 @@
       </div>
     </div>
 
-    <!--     <vuescroll :ops="settingsScrollBar">
-      <div class="container-scroll">
+    <div
+      class="tree-content-container"
+      ref="treeContentContainer"
+    >
+      <vuescroll :ops="settingsScrollBarHorintal">
         <div
-          class="box"
-          v-for="box in 500"
-          :key="'box' + box"
+          class="tree-cell-content"
+          v-for="i of 24"
+          :key="'detaildedConsumtonPlanheader' + i"
         >
-          {{box}}</div>
-      </div>
-    </vuescroll> -->
-    <div class="tree-content-container">
-      <vuescroll opt="settingsScrollBarHorintal">
-        <!--         <div class="tree-content-name"></div> -->
+          {{ 10 >= i ? ("0" + (i - 1)) : i - 1 }}
+        </div>
         <div
           class="tree-content-body"
           v-for="gtpParent in backend.gtps"
@@ -61,42 +66,73 @@ export default {
       settingsScrollBarHorintal: {
         vuescroll: {
           mode: "native",
-          sizeStrategy: "number",
+          sizeStrategy: "percent",
           detectResize: true
         },
         scrollPanel: {
           scrollingX: true,
           scrollingY: false,
           easing: "easeInQuad"
+          // maxHeigth: "800"
         },
         rail: {
-          background: "rgb(93, 131, 165)",
+          background: "#5d83a5",
           opacity: 0,
           size: "6px",
           specifyBorderRadius: false,
-          gutterOfEnds: null,
+          gutterOfEnds: "2px",
           gutterOfSide: "2px",
-          keepShow: false
+          keepShow: true
         },
         bar: {
           showDelay: 500,
           onlyShowBarOnScroll: true,
           keepShow: false,
-          background: "rgb(192, 103, 92)",
+          background: "#006cbe",
           opacity: 1,
           hoverStyle: false,
           specifyBorderRadius: false,
-          minSize: 0,
+          minSize: 0.3,
           size: "6px",
           disable: false
+        },
+        scrollButton: {
+          enable: false,
+          background: "rgb(3, 185, 118)",
+          opacity: 1,
+          step: 180,
+          mousedownStep: 30
         }
       }
     };
+  },
+  methods: {
+    test() {
+      console.log("resize");
+    },
+    // Пересчитать и установить ширину колонки данных для вычисления скроллбара
+    calcWidthTreeContent() {
+      let sideBar = this.$parent.$el.getElementsByClassName("side-bar")[0];
+      this.$refs.treeContentContainer.style.maxWidth =
+        document.body.clientWidth -
+        sideBar.clientWidth -
+        this.$refs.treeHeaderContainer.clientWidth +
+        "px";
+    }
+  },
+  mounted() {
+    this.calcWidthTreeContent();
+  },
+  updated() {
+    // После анимации выезда боковой панели
+    setTimeout(() => {
+      this.calcWidthTreeContent();
+    }, 1000);
   }
 };
 </script>
 
-<style>
+<style lang="scss">
 .tree {
   flex-basis: content;
   display: flex;
@@ -105,12 +141,20 @@ export default {
   min-width: 360px;
   max-width: 20vw;
 }
+.tree-header-name {
+  min-height: 40px;
+  min-width: 60px;
+}
+
 .tree-header-body {
-  min-width: 0px;
+  min-height: 40px;
+  min-width: 60px;
 }
 .tree-content-container {
   min-width: 0px;
-  max-width: 80vw;
+  /* max-width: 70vw; */
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 .tree-content-body {
   display: flex;
