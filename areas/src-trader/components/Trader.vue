@@ -18,17 +18,20 @@
         />
       </template>
     </side-bar>
-    <tree-trader
-      class="tree"
-      :backend="backend"
-    >
-    </tree-trader>
+    <div>
+      <tree-trader
+        :sideBarViewToggle="sideBarViewToggle"
+        class="tree"
+        :backend="backend"
+      >
+      </tree-trader>
+    </div>
   </main>
 </template>
 
 <script>
 import SideBar from "../../../src-general/components/SideBar.vue";
-import TreeTrader from "./TreeTraderMy.vue";
+import TreeTrader from "./TreeTrader.vue";
 import TreeFilter from "./TreeFilter.vue";
 import TreeStatus from "./TreeStatus.vue";
 

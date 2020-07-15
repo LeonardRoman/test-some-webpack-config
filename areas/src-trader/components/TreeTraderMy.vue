@@ -7,6 +7,7 @@
       ref="treeHeaderContainer"
       class="tree-header-container"
     ></div>
+
     <div
       ref="treeContentContainer"
       class="tree-content-container"
@@ -62,7 +63,10 @@ import TreeTraderVue from "./TreeTraderChild.vue";
 export default {
   name: "TreeTraderMy",
   components: { TreeTraderParent },
-  props: { backend: { type: Object, required: true } },
+  props: {
+    backend: { type: Object, required: true },
+    sideBarViewToggle: { type: Boolean }
+  },
   data() {
     return {};
   },
@@ -79,9 +83,11 @@ export default {
   },
 
   mounted() {
-    /*     console.log(this.$refs.treeContentName);
+    /*     
+    console.log(this.$refs.treeContentName);
     console.log(this.$refs.treeContent);
-    console.log(this.$refs.tree); */
+    console.log(this.$refs.tree);
+    */
     let sideBar = this.$parent.$el.getElementsByClassName("side-bar")[0];
 
     // Контейнер для наименования gtp
@@ -91,12 +97,14 @@ export default {
 
     // Контейнер для данных gtp
     let treeContentContainer = this.$refs.treeContentContainer;
-    // treeContentContainer.className = "tree-content-container";
-    /*     treeContentContainer.style.maxWidth =
+    /*  
+    treeContentContainer.className = "tree-content-container";
+    treeContentContainer.style.maxWidth =
       document.body.clientWidth -
       sideBar.clientWidth -
       treeHeaderContainer.clientWidth +
-      "px"; */
+      "px"; 
+    */
     this.calcWidthTreeContent();
     this.$refs.tree.appendChild(treeContentContainer);
 
@@ -125,6 +133,14 @@ export default {
     setTimeout(() => {
       this.calcWidthTreeContent();
     }, 1000);
+  },
+  watch: {
+    sideBarViewToggle() {
+      console.log("sideBarViewToggle watch");
+      setTimeout(() => {
+        this.calcWidthTreeContent();
+      }, 1000);
+    }
   }
 };
 </script>
@@ -133,6 +149,9 @@ export default {
 .tree {
   flex-basis: content;
   display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 90vh;
 }
 .tree-header-container {
   min-width: 360px;
@@ -150,6 +169,7 @@ export default {
 }
 .tree-content-container {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 .tree-content-body {
   display: flex;

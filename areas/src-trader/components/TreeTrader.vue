@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="tree"
-    @resize="test"
-  >
-
+  <div class="tree">
     <div
       class="tree-header-container"
       ref="treeHeaderContainer"
@@ -25,7 +21,10 @@
       class="tree-content-container"
       ref="treeContentContainer"
     >
-      <vuescroll :ops="settingsScrollBarHorintal">
+      <vuescroll
+        ref="vuescroll"
+        :ops="settingsScrollBarHorintal"
+      >
         <div
           class="tree-cell-content"
           v-for="i of 24"
@@ -54,19 +53,20 @@
 
 <script>
 import Vuescroll from "vuescroll";
-import HorizontalScroll from "vue-horizontal-scroll";
-import "vue-horizontal-scroll/dist/vue-horizontal-scroll.css";
 import TreeTraderParent from "./TreeTraderParent.vue";
 export default {
   name: "TreeTrader",
-  components: { TreeTraderParent, Vuescroll, HorizontalScroll },
-  props: { backend: { type: Object, required: true } },
+  components: { TreeTraderParent, Vuescroll },
+  props: {
+    backend: { type: Object, required: true },
+    sideBarViewToggle: { type: Boolean }
+  },
   data() {
     return {
       settingsScrollBarHorintal: {
         vuescroll: {
           mode: "native",
-          sizeStrategy: "percent",
+          sizeStrategy: "number",
           detectResize: true
         },
         scrollPanel: {
@@ -95,39 +95,85 @@ export default {
           minSize: 0.3,
           size: "6px",
           disable: false
+        }
+      },
+      settingsScrollVertiacal: {
+        vuescroll: {
+          mode: "native",
+          sizeStrategy: "number",
+          detectResize: true
         },
-        scrollButton: {
-          enable: false,
-          background: "rgb(3, 185, 118)",
+        scrollPanel: {
+          scrollingX: false,
+          scrollingY: true,
+          easing: "easeInQuad"
+          // maxHeigth: "800"
+        },
+        rail: {
+          background: "#5d83a5",
+          opacity: 0,
+          size: "6px",
+          specifyBorderRadius: false,
+          gutterOfEnds: "2px",
+          gutterOfSide: "2px",
+          keepShow: true
+        },
+        bar: {
+          showDelay: 500,
+          onlyShowBarOnScroll: true,
+          keepShow: false,
+          background: "#006cbe",
           opacity: 1,
-          step: 180,
-          mousedownStep: 30
+          hoverStyle: false,
+          specifyBorderRadius: false,
+          minSize: 0.3,
+          size: "6px",
+          disable: false
         }
       }
     };
   },
   methods: {
-    test() {
-      console.log("resize");
-    },
     // Пересчитать и установить ширину колонки данных для вычисления скроллбара
     calcWidthTreeContent() {
-      let sideBar = this.$parent.$el.getElementsByClassName("side-bar")[0];
-      this.$refs.treeContentContainer.style.maxWidth =
+      const sideBar = this.$parent.$el.getElementsByClassName("side-bar")[0];
+      /*       console.log(
+        "Ширина колонки контента в дереве",
+        this.$refs.treeContentContainer.clientWidth
+      ); */
+      this.$refs.treeContentContainer.style.width =
         document.body.clientWidth -
         sideBar.clientWidth -
         this.$refs.treeHeaderContainer.clientWidth +
         "px";
+      this.$refs.vuescroll.refresh();
+      console.log(
+        "Ширина сайтбара: ",
+        sideBar.clientWidth,
+        "Ширина колонки контента в дереве",
+        this.$refs.treeContentContainer.clientWidth,
+        "Ширина колонки названий в дереве",
+        this.$refs.treeHeaderContainer.clientWidth
+      );
     }
   },
   mounted() {
+    console.log("hook mounted");
     this.calcWidthTreeContent();
   },
+  beforeUpdate() {
+    console.log("hook before updated");
+  },
   updated() {
-    // После анимации выезда боковой панели
-    setTimeout(() => {
-      this.calcWidthTreeContent();
-    }, 1000);
+    console.log("hook updated");
+  },
+  watch: {
+    sideBarViewToggle() {
+      console.log("sideBarViewToggle", this.sideBarViewToggle);
+      setTimeout(() => {
+        this.calcWidthTreeContent();
+      }, 1000);
+    }
   }
 };
 </script>
@@ -136,6 +182,7 @@ export default {
 .tree {
   flex-basis: content;
   display: flex;
+  overflow-y: auto;
 }
 .tree-header-container {
   min-width: 360px;
@@ -152,9 +199,8 @@ export default {
 }
 .tree-content-container {
   min-width: 0px;
-  /* max-width: 70vw; */
-  overflow-x: auto;
-  overflow-y: hidden;
+  /*  max-width: 70vw; */
+  overflow: hidden;
 }
 .tree-content-body {
   display: flex;
